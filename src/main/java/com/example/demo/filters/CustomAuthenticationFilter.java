@@ -3,6 +3,7 @@ package com.example.demo.filters;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +22,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
@@ -63,7 +67,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withExpiresAt(Timestamp.valueOf(LocalDateTime.now().plusMinutes(30)))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-        response.setHeader("access_token", accesToken);
-        response.setHeader("refresh_token", refreshToken);
+        HashMap<String, String> tokens=new HashMap<>();
+        tokens.put("access_token", accesToken);
+        tokens.put("refresh_token", refreshToken);
+        response.setContentType(APPLICATION_JSON_VALUE);
+      //el objectMapper serializa cualquier objeto de java (en este caso tokens)
+        //serializamosy enviamos el objeto al body mediante el outputstream
+        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 }

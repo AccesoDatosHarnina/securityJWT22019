@@ -1,6 +1,7 @@
 package com.example.demo.security;
 
 import java.util.List;
+import static org.springframework.http.HttpMethod.GET;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         //sin trabajar con cookies es STATELESS
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().permitAll();
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
-
+        CustomAuthenticationFilter customAuthenticationFilter=new CustomAuthenticationFilter(authenticationManagerBean());
+        //asi podemos cambiar la configuracion de la pagina de arranque
+        //la configuracion por defecto para el login esta en la clase de la que hereda CustomAuthenticationFilter
+        customAuthenticationFilter.setFilterProcessesUrl("/otro/login") ;//2
+//        http.authorizeRequests().antMatchers("/login").permitAll();//1
+        http.authorizeRequests().antMatchers("/otro/login/**").permitAll();//2
+        http.authorizeRequests().antMatchers(GET,"/students/list").hasRole(ApplicationUserRol.GUEST.name());
+        http.authorizeRequests().antMatchers(GET,"/students/student/*").hasRole(ApplicationUserRol.ADMIN.name());
+//        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));//1
+        http.addFilter(customAuthenticationFilter);//2
     }
 
     @Bean
