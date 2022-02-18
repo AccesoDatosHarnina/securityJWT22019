@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import com.example.demo.filters.CustomAuthenticationFilter;
 import com.example.demo.services.AppUserService;
 
 
@@ -47,7 +48,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         //sin trabajar con cookies es STATELESS
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().anyRequest().permitAll();
-//        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
 
     }
 
