@@ -19,8 +19,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.demo.filters.CustomAuthenticationFilter;
+import com.example.demo.filters.CustomAuthorizationFilter;
 import com.example.demo.services.AppUserService;
 
 
@@ -46,18 +48,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        //sin trabajar con cookies es STATELESS
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        CustomAuthenticationFilter customAuthenticationFilter=new CustomAuthenticationFilter(authenticationManagerBean());
-        //asi podemos cambiar la configuracion de la pagina de arranque
-        //la configuracion por defecto para el login esta en la clase de la que hereda CustomAuthenticationFilter
-        customAuthenticationFilter.setFilterProcessesUrl("/otro/login") ;//2
-//        http.authorizeRequests().antMatchers("/login").permitAll();//1
-        http.authorizeRequests().antMatchers("/otro/login/**").permitAll();//2
+        http.authorizeRequests().antMatchers("/login").permitAll();
         http.authorizeRequests().antMatchers(GET,"/students/list").hasRole(ApplicationUserRol.GUEST.name());
         http.authorizeRequests().antMatchers(GET,"/students/student/*").hasRole(ApplicationUserRol.ADMIN.name());
-//        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));//1
-        http.addFilter(customAuthenticationFilter);//2
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
