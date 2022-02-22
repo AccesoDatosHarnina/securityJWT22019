@@ -23,9 +23,9 @@ public class AppUserService {
     private void doing(){
         users=new ArrayList<>();
         users.add(new AppUser(1L,"luis","123"));
-        users.add(new AppUser(2L,"Jose","321"));
+        users.add(new AppUser(2L,"jose","321"));
         addRoleToUser("luis",ApplicationUserRol.ADMIN.name());
-        addRoleToUser("Jose", ApplicationUserRol.GUEST.name());
+        addRoleToUser("jose", ApplicationUserRol.GUEST.name());
     }
     public void addRoleToUser(String username,String role){
             findUserByUsername(username).ifPresent((a)->a.addRole(role));
