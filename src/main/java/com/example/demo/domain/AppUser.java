@@ -3,9 +3,6 @@ package com.example.demo.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-
-
 public class AppUser {
     private Long id;
     private String username;

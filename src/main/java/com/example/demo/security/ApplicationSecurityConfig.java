@@ -24,13 +24,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.demo.filters.CustomAuthenticationFilter;
-import com.example.demo.filters.CustomAuthorizationFilter;
 import com.example.demo.services.AppUserService;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+import com.example.demo.filters.CustomAuthenticationFilter;
+import com.example.demo.filters.CustomAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity

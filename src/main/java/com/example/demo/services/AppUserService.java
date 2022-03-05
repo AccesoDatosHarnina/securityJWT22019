@@ -1,8 +1,8 @@
 package com.example.demo.services;
 
+import com.example.demo.domain.AppUser;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.domain.AppUser;
 import com.example.demo.security.ApplicationUserRol;
 
 import javax.annotation.PostConstruct;
@@ -27,7 +27,7 @@ public class AppUserService {
         addRoleToUser("luis",ApplicationUserRol.ADMIN.name());
         addRoleToUser("jose", ApplicationUserRol.GUEST.name());
     }
-    public void addRoleToUser(String username,String role){
+    private void addRoleToUser(String username,String role){
             findUserByUsername(username).ifPresent((a)->a.addRole(role));
     }
     private Optional<AppUser> findUserByUsername(String username){

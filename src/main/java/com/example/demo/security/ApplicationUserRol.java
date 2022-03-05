@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 public enum ApplicationUserRol {
     //usar SEts me obliga a importar la dependencia GUAVA
 	
-    ADMIN(ApplicationUserPermission.STUDENT_READ,ApplicationUserPermission.STUDENT_WRITE),
+    ADMIN(),
+//    ADMIN(ApplicationUserPermission.STUDENT_READ,ApplicationUserPermission.STUDENT_WRITE),
     GUEST(ApplicationUserPermission.STUDENT_READ);
     private final Set<ApplicationUserPermission> permissions;
     
@@ -32,7 +33,7 @@ public enum ApplicationUserRol {
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toSet());
         //le add el usuario actual de la enumeracion y volvemos al ApllicationSecurityConfig
-        permissionsAuth.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+//        permissionsAuth.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
         return permissionsAuth;
     }
 }
