@@ -47,6 +47,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         //dependencia jwt
         //obtenemos el user pasado arriba y le aplicamos una encriptacion de hmac256
         User user = (User) authentication.getPrincipal();
+        System.out.println("Sacando las autorities");
+        for (GrantedAuthority au: user.getAuthorities()) {
+            System.out.println(au.toString());
+        }
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
         //usamod JWT.create para crear el token. le ponemos estos datos
         String accesToken = JWT.create()

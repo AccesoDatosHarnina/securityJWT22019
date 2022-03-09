@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,6 +27,9 @@ public enum ApplicationUserRol {
         return permissions;
     }
 
+    public static ApplicationUserRol getRolByName(String name){
+        return Arrays.stream(ApplicationUserRol.values()).filter((rol)->rol.name().equals(name)).findFirst().get();
+    }
     public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
         Set<SimpleGrantedAuthority> permissionsAuth = getPermissions().stream()
                 //el map crea una nueva lista donde sustituye cada permiso por una authority de tipo simple

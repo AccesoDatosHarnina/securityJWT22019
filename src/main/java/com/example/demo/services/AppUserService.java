@@ -30,7 +30,7 @@ public class AppUserService {
     private void addRoleToUser(String username,String role){
             findUserByUsername(username).ifPresent((a)->a.addRole(role));
     }
-    private Optional<AppUser> findUserByUsername(String username){
+    public Optional<AppUser> findUserByUsername(String username){
         return users.stream().filter((a)->a.getUsername().equals(username)).findFirst();
 
     }
